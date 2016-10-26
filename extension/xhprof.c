@@ -1341,15 +1341,14 @@ void hp_mode_hier_beginfn_cb(hp_entry_t **entries,
   current->tsc_start = cycle_timer();
 
   /* Get CPU usage */
-  if (hp_globals.xhprof_flags & XHPROF_FLAGS_CPU) {
-    getrusage(RUSAGE_SELF, &(current->ru_start_hprof));
-  }
+  
+  getrusage(RUSAGE_SELF, &(current->ru_start_hprof));
 
   /* Get memory usage */
-  if (hp_globals.xhprof_flags & XHPROF_FLAGS_MEMORY) {
-    current->mu_start_hprof  = zend_memory_usage(0 TSRMLS_CC);
-    current->pmu_start_hprof = zend_memory_peak_usage(0 TSRMLS_CC);
-  }
+  
+  current->mu_start_hprof  = zend_memory_usage(0 TSRMLS_CC);
+  current->pmu_start_hprof = zend_memory_peak_usage(0 TSRMLS_CC);
+  
 }
 
 
@@ -1434,7 +1433,7 @@ void hp_mode_hier_endfn_cb(hp_entry_t **entries  TSRMLS_DC) {
               TSRMLS_CC);
   }
 
-  if (hp_globals.xhprof_flags & XHPROF_FLAGS_MEMORY) {
+  
     /* Get Memory usage */
     mu_end  = zend_memory_usage(0 TSRMLS_CC);
     pmu_end = zend_memory_peak_usage(0 TSRMLS_CC);
@@ -1443,7 +1442,7 @@ void hp_mode_hier_endfn_cb(hp_entry_t **entries  TSRMLS_DC) {
 
     hp_inc_count(counts, zend_string_init("mu", sizeof("mu") - 1, 1),  mu_end - top->mu_start_hprof    TSRMLS_CC);
     hp_inc_count(counts, zend_string_init("pmu", sizeof("pmu") - 1, 1), pmu_end - top->pmu_start_hprof  TSRMLS_CC);
-  }
+ 
 
 }
 
